@@ -1,8 +1,20 @@
+import { useState } from "react";
+
 function App() {
+  const [task, setTask] = useState("");
+
   return (
     <div>
-      <h1>My First React App 🚀</h1>
-      <p>I am learning React step by step</p>
+      <h1>Task Manager</h1>
+
+      <input
+        type="text"
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
+        placeholder="Enter task"
+      />
+
+      <button>Add Task</button>
     </div>
   );
 }
