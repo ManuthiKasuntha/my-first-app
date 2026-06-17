@@ -2,6 +2,14 @@ import { useState } from "react";
 
 function App() {
   const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = () => {
+    if (task.trim() === "") return;
+
+    setTasks([...tasks, task]);
+    setTask("");
+  };
 
   return (
     <div>
@@ -14,7 +22,15 @@ function App() {
         placeholder="Enter task"
       />
 
-      <button>Add Task</button>
+      <button onClick={addTask}>
+        Add Task
+      </button>
+
+      <ul>
+        {tasks.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
