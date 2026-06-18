@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./App.css";
 
 function App() {
   const [task, setTask] = useState("");
@@ -11,24 +12,42 @@ function App() {
     setTask("");
   };
 
+  const deleteTask = (indexToDelete) => {
+    const updatedTasks = tasks.filter(
+      (_, index) => index !== indexToDelete
+    );
+
+    setTasks(updatedTasks);
+  };
+
   return (
-    <div>
+    <div className="container">
       <h1>Task Manager</h1>
 
-      <input
-        type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Enter task"
-      />
+      <div className="input-section">
+        <input
+          type="text"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          placeholder="Enter task"
+        />
 
-      <button onClick={addTask}>
-        Add Task
-      </button>
+        <button onClick={addTask}>
+          Add Task
+        </button>
+      </div>
 
       <ul>
         {tasks.map((item, index) => (
-          <li key={index}>{item}</li>
+          <li key={index}>
+            {item}
+
+            <button
+              onClick={() => deleteTask(index)}
+            >
+              Delete
+            </button>
+          </li>
         ))}
       </ul>
     </div>
