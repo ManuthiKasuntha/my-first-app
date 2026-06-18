@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 import TaskInput from "./components/TaskInput";
@@ -7,6 +7,21 @@ import TaskList from "./components/TaskList";
 function App() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem("tasks");
+
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "tasks",
+      JSON.stringify(tasks)
+    );
+  }, [tasks]);
 
   const addTask = () => {
     if (task.trim() === "") return;
