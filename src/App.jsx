@@ -1,57 +1,46 @@
-import { useState, useEffect } from "react";
 import "./App.css";
 
-import TaskInput from "./components/TaskInput";
-import TaskList from "./components/TaskList";
+import {
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+
+import Home from "./pages/Home";
+import Tasks from "./pages/Tasks";
+import About from "./pages/About";
 
 function App() {
-  const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(
-      "tasks",
-      JSON.stringify(tasks)
-    );
-  }, [tasks]);
-
-  const addTask = () => {
-    if (task.trim() === "") return;
-
-    setTasks([...tasks, task]);
-    setTask("");
-  };
-
-  const deleteTask = (indexToDelete) => {
-    const updatedTasks = tasks.filter(
-      (_, index) => index !== indexToDelete
-    );
-
-    setTasks(updatedTasks);
-  };
-
   return (
     <div className="container">
-      <h1>Task Manager</h1>
+      <h1>Task Manager App</h1>
 
-      <TaskInput
-        task={task}
-        setTask={setTask}
-        addTask={addTask}
-      />
+      <nav>
+        <Link to="/">Home</Link>
+        {" | "}
+        <Link to="/tasks">Tasks</Link>
+        {" | "}
+        <Link to="/about">About</Link>
+      </nav>
 
-      <TaskList
-        tasks={tasks}
-        deleteTask={deleteTask}
-      />
+      <hr />
+
+      <Routes>
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
+        <Route
+          path="/tasks"
+          element={<Tasks />}
+        />
+
+        <Route
+          path="/about"
+          element={<About />}
+        />
+      </Routes>
     </div>
   );
 }
