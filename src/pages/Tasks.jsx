@@ -7,6 +7,7 @@ function Tasks() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
 
+  // Load from localStorage (runs once when page opens)
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
 
@@ -15,26 +16,63 @@ function Tasks() {
     }
   }, []);
 
+  // Save to localStorage (runs whenever tasks change)
   useEffect(() => {
-    localStorage.setItem(
-      "tasks",
-      JSON.stringify(tasks)
-    );
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  // Add task
   const addTask = () => {
     if (task.trim() === "") return;
 
-    setTasks([...tasks, task]);
+    setTasks([
+      ...tasks,
+      {
+        text: task,
+        completed: false,
+      },
+    ]);
+
     setTask("");
   };
 
+  // Delete task
   const deleteTask = (indexToDelete) => {
-    const updatedTasks = tasks.filter(
+    const updated = tasks.filter(
       (_, index) => index !== indexToDelete
     );
 
-    setTasks(updatedTasks);
+    setTasks(updated);
+  };
+
+  // Toggle complete
+  const toggleTask = (indexToToggle) => {
+    const updated = tasks.map((t, index) => {
+      if (index === indexToToggle) {
+        return {
+          ...t,
+          completed: !t.completed,
+        };
+      }
+      return t;
+    });
+
+    setTasks(updated);
+  };
+
+  // ✏️ EDIT TASK (NEW FUNCTION)
+  const editTask = (indexToEdit, newText) => {
+    const updated = tasks.map((t, index) => {
+      if (index === indexToEdit) {
+        return {
+          ...t,
+          text: newText,
+        };
+      }
+      return t;
+    });
+
+    setTasks(updated);
   };
 
   return (
@@ -50,6 +88,8 @@ function Tasks() {
       <TaskList
         tasks={tasks}
         deleteTask={deleteTask}
+        toggleTask={toggleTask}
+        editTask={editTask}
       />
     </div>
   );

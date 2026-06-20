@@ -1,7 +1,7 @@
 function TaskInput({
   task,
   setTask,
-  addTask
+  addTask,
 }) {
   return (
     <div className="input-section">
